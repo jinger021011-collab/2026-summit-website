@@ -68,6 +68,15 @@ describe('大会官网', () => {
     expect(screen.queryByText('线下席位有限')).not.toBeInTheDocument()
   })
 
+  it('移动端固定报名栏显示大会日期提示', () => {
+    render(<App />)
+    const mobileRegistration = document.querySelector('.mobile-registration') as HTMLElement
+
+    expect(mobileRegistration).toHaveTextContent('DB × AI')
+    expect(mobileRegistration).toHaveTextContent('8月22日 北京见')
+    expect(mobileRegistration).not.toHaveTextContent('席位有限')
+  })
+
   it('展示 21 位嘉宾并将陶术江放在陈学峰之后', () => {
     render(<App />)
     const grid = screen.getByTestId('speaker-grid')
