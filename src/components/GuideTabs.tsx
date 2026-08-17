@@ -34,10 +34,10 @@ function VenueMap() {
     window.addEventListener('keydown', handler)
     return () => { window.removeEventListener('keydown', handler); triggerElement?.focus() }
   }, [open])
-  const image = <ImageWithFallback src="/venue/场地平面图.png" alt="2026 时序数据技术创新大会场地平面图" loading="lazy" fallback={<p className="venue-fallback">场地平面图将在会前更新</p>} />
+  const imageAlt = '2026 时序数据技术创新大会场地平面图'
   return <div className="venue-map">
-    <button ref={trigger} type="button" className="venue-trigger" onClick={() => setOpen(true)} aria-label="查看大会场地平面图大图">{image}<span>点击查看大图</span></button>
-    {open && <div className="lightbox" role="dialog" aria-modal="true" aria-label="场地平面图大图"><button className="lightbox-scrim" type="button" aria-label="关闭场地平面图" onClick={() => setOpen(false)} /><div className="lightbox-content"><button ref={close} className="lightbox-close" type="button" aria-label="关闭场地平面图" onClick={() => setOpen(false)}><X aria-hidden="true" /></button>{image}</div></div>}
+    <button ref={trigger} type="button" className="venue-trigger" onClick={() => setOpen(true)} aria-label="查看大会场地平面图大图"><ImageWithFallback src="/venue/场地平面图.png" alt={imageAlt} loading="lazy" fallback={<p className="venue-fallback">场地平面图将在会前更新</p>} /><span>点击查看大图</span></button>
+    {open && <div className="lightbox" role="dialog" aria-modal="true" aria-label="场地平面图大图"><button className="lightbox-scrim" type="button" aria-label="关闭场地平面图" onClick={() => setOpen(false)} /><div className="lightbox-content"><button ref={close} className="lightbox-close" type="button" aria-label="关闭场地平面图" onClick={() => setOpen(false)}><X aria-hidden="true" /></button><ImageWithFallback className="venue-map-full" src="/venue/场地平面图.png" alt={imageAlt} loading="eager" fallback={<p className="venue-fallback">场地平面图将在会前更新</p>} /></div></div>}
   </div>
 }
 

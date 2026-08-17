@@ -22,4 +22,15 @@ describe('全局导航', () => {
     expect(screen.queryByRole('navigation', { name: '移动端导航' })).not.toBeInTheDocument()
     expect(trigger).toHaveFocus()
   })
+
+  it('移动菜单层脱离带有毛玻璃效果的固定页头', async () => {
+    const user = userEvent.setup()
+    render(<Header activeSection="" />)
+    await user.click(screen.getByRole('button', { name: '打开导航菜单' }))
+
+    const menu = screen.getByRole('navigation', { name: '移动端导航' })
+    const layer = menu.closest('.mobile-menu-layer')
+    expect(layer).not.toBeNull()
+    expect(screen.getByRole('banner')).not.toContainElement(layer as HTMLElement)
+  })
 })

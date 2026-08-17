@@ -43,7 +43,7 @@ export function Header({ activeSection }: HeaderProps) {
     }
   }, [open])
 
-  return (
+  return <>
     <header className="site-header">
       <div className="header-inner">
         <a className="brand" href="#top" aria-label="2026 时序数据技术创新大会首页">
@@ -69,22 +69,22 @@ export function Header({ activeSection }: HeaderProps) {
           <Menu aria-hidden="true" />
         </button>
       </div>
-      {open && (
-        <div className="mobile-menu-layer">
-          <button className="menu-scrim" type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)} />
-          <nav ref={mobileMenu} id="mobile-menu" className="mobile-menu" aria-label="移动端导航">
-            <div className="mobile-menu-head">
-              <span>导航</span>
-              <button ref={closeButton} type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)}>
-                <X aria-hidden="true" />
-              </button>
-            </div>
-            {SITE.navigation.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>
-            ))}
-          </nav>
-        </div>
-      )}
     </header>
-  )
+    {open && (
+      <div className="mobile-menu-layer">
+        <button className="menu-scrim" type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)} />
+        <nav ref={mobileMenu} id="mobile-menu" className="mobile-menu" aria-label="移动端导航">
+          <div className="mobile-menu-head">
+            <span>导航</span>
+            <button ref={closeButton} type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)}>
+              <X aria-hidden="true" />
+            </button>
+          </div>
+          {SITE.navigation.map((item) => (
+            <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    )}
+  </>
 }

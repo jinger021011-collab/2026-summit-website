@@ -43,7 +43,7 @@ export function AboutSection() {
 }
 
 export function RegisterSection() {
-  return <section id="register" className="register-section" aria-labelledby="register-title"><div className="register-glow" /><div className="container register-content"><p className="section-kicker">JOIN US IN BEIJING</p><h2 id="register-title">DB × AI<br />探索时序数据与人工智能融合的新未来</h2><p>2026 年 8 月 22 日，北京见！</p><RegistrationLink position="final_cta" className="button button-bright">立即报名</RegistrationLink><small>线下席位有限，请提前报名</small></div></section>
+  return <section id="register" className="register-section" aria-labelledby="register-title"><div className="register-glow" /><div className="container register-content"><p className="section-kicker">JOIN US IN BEIJING</p><h2 id="register-title">DB × AI<br />探索时序数据与人工智能融合的新未来</h2><p>2026 年 8 月 22 日，北京见！</p><RegistrationLink position="final_cta" className="button button-bright">立即报名</RegistrationLink><small>席位有限，请提前报名</small></div></section>
 }
 
 export function Footer() {

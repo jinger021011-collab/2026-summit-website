@@ -58,6 +58,15 @@ describe('大会官网', () => {
     expect(hero.querySelector('.hero-panel')).not.toBeInTheDocument()
   })
 
+  it('议程和报名引导不显示调整提示或线下字样', () => {
+    render(<App />)
+    expect(screen.getByRole('region', { name: '大会议程' })).not.toHaveTextContent('议程可能根据实际情况调整，请以大会当天公布的信息为准。')
+    const register = document.querySelector('#register') as HTMLElement
+    expect(register).toHaveTextContent('席位有限，请提前报名')
+    expect(register).not.toHaveTextContent('线下席位有限')
+    expect(screen.queryByText('线下席位有限')).not.toBeInTheDocument()
+  })
+
   it('展示 21 位嘉宾并将陶术江放在陈学峰之后', () => {
     render(<App />)
     const grid = screen.getByTestId('speaker-grid')
@@ -254,6 +263,18 @@ describe('大会官网', () => {
     render(<App />)
     await user.click(screen.getByRole('tab', { name: '场地平面图' }))
     expect(screen.getByRole('img', { name: '2026 时序数据技术创新大会场地平面图' })).toBeInTheDocument()
+  })
+
+  it('场地平面图弹层使用立即加载的大图资源', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('tab', { name: '场地平面图' }))
+    await user.click(screen.getByRole('button', { name: '查看大会场地平面图大图' }))
+
+    const dialog = screen.getByRole('dialog', { name: '场地平面图大图' })
+    const image = within(dialog).getByRole('img', { name: '2026 时序数据技术创新大会场地平面图' })
+    expect(image).toHaveAttribute('loading', 'eager')
+    expect(image).toHaveClass('venue-map-full')
   })
 
   it('参会须知将线上参会放在参会提醒后并展示新增联系人', () => {

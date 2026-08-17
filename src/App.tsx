@@ -48,7 +48,7 @@ export default function App() {
     <main id="main-content">
       <HeroSection />
       <AboutSection />
-      <section id="agenda" className="section section-tint" aria-labelledby="agenda-title"><div className="agenda-container"><header className="section-heading"><p className="section-kicker">PROGRAM</p><h2 id="agenda-title">大会议程</h2><p>议程可能根据实际情况调整，请以大会当天公布的信息为准。</p></header><Agenda /></div></section>
+      <section id="agenda" className="section section-tint" aria-labelledby="agenda-title"><div className="agenda-container"><header className="section-heading"><p className="section-kicker">PROGRAM</p><h2 id="agenda-title">大会议程</h2></header><Agenda /></div></section>
       <section id="speakers" className="section section-light" aria-labelledby="speakers-title"><div className="speakers-container"><header className="section-heading"><p className="section-kicker">SPEAKERS</p><h2 id="speakers-title">嘉宾介绍</h2></header><SpeakerGrid /></div></section>
       <section id="partners" className="section section-tint" aria-labelledby="partners-title"><div className="container"><header className="section-heading"><p className="section-kicker">PARTNERS</p><h2 id="partners-title">合作伙伴</h2></header><PartnerGrid /></div></section>
       <section id="guide" className="section section-light" aria-labelledby="guide-title"><div className="container"><header className="section-heading"><p className="section-kicker">ATTENDEE GUIDE</p><h2 id="guide-title">参会信息</h2></header><GuideTabs /></div></section>

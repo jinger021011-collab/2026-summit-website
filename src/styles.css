@@ -118,7 +118,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .ceremony-card .talk strong { color: #075f86; }
 
 .speaker-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 22px; }
-.speaker-card { display: flex; flex: 0 1 min(200px, calc((100% - 88px) / 5)); width: min(200px, calc((100% - 88px) / 5)); max-width: 200px; overflow: hidden; flex-direction: column; border: 1px solid #e3e9f3; border-radius: 15px; background: white; box-shadow: 0 10px 28px rgba(32,53,104,.07); }
+.speaker-card { display: flex; flex: 0 1 min(180px, calc((100% - 110px) / 6)); width: min(180px, calc((100% - 110px) / 6)); max-width: 180px; overflow: hidden; flex-direction: column; border: 1px solid #e3e9f3; border-radius: 15px; background: white; box-shadow: 0 10px 28px rgba(32,53,104,.07); }
 .speaker-photo { flex: 0 0 auto; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 15px 15px 0 0; background: linear-gradient(135deg, #edf2fd, #dfe9fc); }
 .speaker-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 .speaker-fallback { width: 100%; height: 100%; display: grid; place-items: center; color: #7590ca; }
@@ -152,7 +152,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .venue-fallback { padding: 80px 20px; margin: 0; text-align: center; }
 .lightbox { position: fixed; inset: 0; z-index: 180; display: grid; place-items: center; padding: 32px; }
 .lightbox-content { position: relative; z-index: 1; max-width: min(1500px, 94vw); max-height: 90vh; overflow: auto; border-radius: 18px; background: white; }
-.lightbox-content img { width: 100%; }
+.lightbox-content img { display: block; width: 100%; height: auto; }
 .lightbox-close { position: sticky; z-index: 2; top: 12px; left: calc(100% - 54px); width: 42px; height: 42px; display: grid; place-items: center; margin-bottom: -54px; border: 0; border-radius: 50%; color: white; background: #071a62; cursor: pointer; }
 
 .register-section { position: relative; overflow: hidden; padding: 110px 0; color: white; background: linear-gradient(135deg, #071a62 5%, #154cc7 56%, #6a43d8); text-align: center; }
@@ -223,11 +223,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .speaker-card { flex-basis: min(200px, calc((100% - 66px) / 4)); max-width: min(200px, calc((100% - 66px) / 4)); }
+  .speaker-card { flex-basis: min(180px, calc((100% - 88px) / 5)); max-width: min(180px, calc((100% - 88px) / 5)); }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .speaker-card { flex-basis: min(200px, calc((100% - 44px) / 3)); max-width: min(200px, calc((100% - 44px) / 3)); }
+  .speaker-card { flex-basis: min(180px, calc((100% - 66px) / 4)); max-width: min(180px, calc((100% - 66px) / 4)); }
 }
 
 @media (max-width: 767px) {
@@ -242,10 +242,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-info-bar .button { width: 100%; min-height: 58px; margin: 24px 0 0; }
   .speakers-container { width: calc(100% - 32px); }
   .speaker-grid { gap: 12px; }
-  .speaker-card { flex-basis: calc((100% - 12px) / 2); max-width: calc((100% - 12px) / 2); }
+  .speaker-card { flex-basis: calc((100% - 24px) / 3); max-width: calc((100% - 24px) / 3); }
   .speaker-info { padding: 16px; }
   .speaker-info h3 { font-size: 1.25rem; }
   .speaker-info p { font-size: .875rem; }
+  .lightbox { padding: 12px; }
+  .lightbox-content { width: 100%; max-width: none; max-height: calc(100svh - 24px); border-radius: 14px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .lightbox-content .venue-map-full { width: 960px; max-width: none; touch-action: pan-x pan-y; }
 }
 
 @media (max-width: 720px) {
