@@ -41,7 +41,7 @@ describe('大会官网', () => {
     expect(heading).not.toHaveTextContent(/[，。]/)
   })
 
-  it('首屏保留语义标题并仅在底部信息栏展示会议信息', () => {
+  it('首屏保留语义标题并仅在底部信息栏展示日期和地点', () => {
     render(<App />)
     const hero = screen.getByRole('region', { name: '2026 时序数据技术创新大会' })
     const visual = hero.querySelector('.hero-visual')
@@ -53,7 +53,8 @@ describe('大会官网', () => {
     expect(hero.querySelector('.hero-title-block')).not.toBeInTheDocument()
     expect(infoBar).toHaveTextContent('2026年8月22日')
     expect(infoBar).toHaveTextContent('北京丽都皇冠假日酒店')
-    expect(infoBar).toHaveTextContent('线下会议＋线上直播')
+    expect(infoBar).not.toHaveTextContent('参会形式')
+    expect(infoBar).not.toHaveTextContent('线下会议＋线上直播')
     expect(within(infoBar as HTMLElement).getByRole('link', { name: '立即报名' })).toHaveAttribute('data-registration-position', 'hero_bottom')
     expect(hero.querySelector('.hero-panel')).not.toBeInTheDocument()
   })

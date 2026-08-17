@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrainCircuit, Building2, CalendarDays, DatabaseZap, MapPin, Radio, UsersRound } from 'lucide-react'
+import { BrainCircuit, Building2, CalendarDays, DatabaseZap, MapPin, UsersRound } from 'lucide-react'
 import { HIGHLIGHTS, SITE } from '../data/site'
 import { RegistrationLink } from './RegistrationLink'
 
@@ -27,7 +27,6 @@ export function HeroSection() {
       <div className="hero-info-bar">
         <div className="hero-fact"><CalendarDays aria-hidden="true" /><span><small>大会时间</small><strong><time dateTime="2026-08-22">{SITE.dateShort}</time></strong></span></div>
         <div className="hero-fact"><MapPin aria-hidden="true" /><span><small>大会地点</small><strong>{SITE.venue}</strong></span></div>
-        <div className="hero-fact"><Radio aria-hidden="true" /><span><small>参会形式</small><strong>{SITE.format}</strong></span></div>
         <RegistrationLink position="hero_bottom" className="button button-primary">立即报名</RegistrationLink>
       </div>
     </div>
