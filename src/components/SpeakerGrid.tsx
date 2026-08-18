@@ -1,20 +1,21 @@
 import { UserRound } from 'lucide-react'
-import { SPEAKERS } from '../data/speakers'
+import { usePageContent } from '../i18n'
 import { ImageWithFallback } from './ImageWithFallback'
 
 export function SpeakerGrid() {
+  const { speakers } = usePageContent()
   return (
     <div className="speaker-grid" data-testid="speaker-grid">
-      {SPEAKERS.map((speaker) => (
+      {speakers.items.map((speaker) => (
         <article className="speaker-card" aria-label={speaker.name} key={speaker.id}>
           <div className="speaker-photo">
             <ImageWithFallback
               src={speaker.image}
-              alt={`${speaker.name}照片`}
+              alt={speakers.photoAlt(speaker.name)}
               loading="lazy"
               width="480"
               height="480"
-              fallback={<span className="speaker-fallback" aria-label={`${speaker.name}照片暂缺`}><UserRound aria-hidden="true" /></span>}
+              fallback={<span className="speaker-fallback" aria-label={speakers.photoUnavailable(speaker.name)}><UserRound aria-hidden="true" /></span>}
             />
           </div>
           <div className="speaker-info">

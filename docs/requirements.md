@@ -49,19 +49,29 @@
 
 ```text
 assets/
-├── hero/                 # 桌面端与移动端头图
-├── speakers/             # 嘉宾照片，使用数字命名
-├── logos/                # 主办方、合作伙伴、媒体 Logo
-└── venue/                # 场地平面图等会场图片
+├── cdn-ready/            # 页面实际使用且可直接上传 CDN 的英文命名副本
+│   ├── hero/             # 中英文大会头图
+│   ├── speakers/         # 嘉宾照片
+│   ├── logos/            # 主办方、合作伙伴、媒体 Logo
+│   ├── social/           # 社交图标和二维码
+│   ├── venue/            # 场地平面图
+│   └── asset-manifest.json
+├── hero/                 # 原始头图备份
+├── speakers/             # 原始嘉宾照片备份
+├── logos/                # 原始及标准化 Logo 备份
+└── venue/                # 原始场地图片备份
 ```
 
 ### 3.1 素材使用要求
 
-- 头图应分别提供桌面端和移动端版本，建议命名为 `hero-desktop.*`、`hero-mobile.*`。
-- 嘉宾照片放置于 `assets/speakers/`，按照嘉宾序号命名为 `1.jpg`、`2.jpg`、`3.jpg`……
+- 页面引用统一使用 `assets/cdn-ready/` 下的副本；原始素材不得覆盖或删除。
+- 所有 CDN-ready 文件使用 ASCII 小写字母、数字和连字符命名，不包含中文、空格或时间戳。
+- 中英文头图分别命名为 `hero-zh.*` 和 `hero-en.*`。
+- 嘉宾照片使用 `speaker-<两位序号>-<英文名>.png` 格式。
 - 嘉宾照片统一采用 4:5 或 1:1 比例，主体居中，背景尽量一致；不得直接放大低清图片。
-- Logo 放置于 `assets/logos/`，优先使用 SVG 或透明背景 PNG。
-- 场地平面图建议命名为 `场地平面图.jpg`，放置于 `assets/venue/`。
+- Logo 使用 `logo-<分类>-<两位序号>.png` 格式。
+- 中文场地平面图命名为 `venue-map.png`，英文场地平面图命名为 `venue-map-en.jpg`。
+- `src/data/assets.ts` 集中管理本地资源根路径，后续切换 CDN 时只修改该文件中的 `ASSET_BASE_URL`。
 - 所有图片均需设置有意义的 `alt` 文本；纯装饰图片使用空 `alt`。
 
 ## 4. 页面功能需求
@@ -294,7 +304,7 @@ assets/
 #### 4.7.4 场地平面图
 
 - 展示大会场地平面图，并支持点击查看大图。
-- 图片路径：`assets/venue/场地平面图.png`。
+- 中文图片路径：`assets/cdn-ready/venue/venue-map.png`；英文图片路径：`assets/cdn-ready/venue/venue-map-en.jpg`。
 - 图片必须包含有意义的替代文本，例如“2026 时序数据技术创新大会场地平面图”。
 - 若开发时尚未提供图片，则显示“场地平面图将在会前更新”，不得出现破图或空白容器。
 

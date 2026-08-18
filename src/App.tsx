@@ -6,11 +6,14 @@ import { Header } from './components/Header'
 import { PartnerGrid } from './components/PartnerGrid'
 import { SpeakerGrid } from './components/SpeakerGrid'
 import { AboutSection, Footer, HeroSection, RegisterSection } from './components/sections'
+import { Seo } from './components/Seo'
+import { usePageContent } from './i18n'
 import { shouldShowMobileRegistration } from './lib/visibility'
 
 const sectionIds = ['about', 'agenda', 'speakers', 'partners', 'guide']
 
 export default function App() {
+  const content = usePageContent()
   const [activeSection, setActiveSection] = useState('')
   const [pastHero, setPastHero] = useState(false)
   const [registerVisible, setRegisterVisible] = useState(false)
@@ -43,15 +46,16 @@ export default function App() {
   }, [])
 
   return <>
-    <a className="skip-link" href="#main-content">跳至主要内容</a>
+    <Seo />
+    <a className="skip-link" href="#main-content">{content.common.skipToContent}</a>
     <Header activeSection={activeSection} />
     <main id="main-content">
       <HeroSection />
       <AboutSection />
-      <section id="agenda" className="section section-tint" aria-labelledby="agenda-title"><div className="agenda-container"><header className="section-heading"><p className="section-kicker">PROGRAM</p><h2 id="agenda-title">大会议程</h2></header><Agenda /></div></section>
-      <section id="speakers" className="section section-light" aria-labelledby="speakers-title"><div className="speakers-container"><header className="section-heading"><p className="section-kicker">SPEAKERS</p><h2 id="speakers-title">嘉宾介绍</h2></header><SpeakerGrid /></div></section>
-      <section id="partners" className="section section-tint" aria-labelledby="partners-title"><div className="container"><header className="section-heading"><p className="section-kicker">PARTNERS</p><h2 id="partners-title">合作伙伴</h2></header><PartnerGrid /></div></section>
-      <section id="guide" className="section section-light" aria-labelledby="guide-title"><div className="container"><header className="section-heading"><p className="section-kicker">ATTENDEE GUIDE</p><h2 id="guide-title">参会信息</h2></header><GuideTabs /></div></section>
+      <section id="agenda" className="section section-tint" aria-labelledby="agenda-title"><div className="agenda-container"><header className="section-heading"><p className="section-kicker">PROGRAM</p><h2 id="agenda-title">{content.sections.agenda}</h2></header><Agenda /></div></section>
+      <section id="speakers" className="section section-light" aria-labelledby="speakers-title"><div className="speakers-container"><header className="section-heading"><p className="section-kicker">SPEAKERS</p><h2 id="speakers-title">{content.sections.speakers}</h2></header><SpeakerGrid /></div></section>
+      <section id="partners" className="section section-tint" aria-labelledby="partners-title"><div className="container"><header className="section-heading"><p className="section-kicker">PARTNERS</p><h2 id="partners-title">{content.sections.partners}</h2></header><PartnerGrid /></div></section>
+      <section id="guide" className="section section-light" aria-labelledby="guide-title"><div className="container"><header className="section-heading"><p className="section-kicker">ATTENDEE GUIDE</p><h2 id="guide-title">{content.sections.guide}</h2></header><GuideTabs /></div></section>
       <RegisterSection />
     </main>
     <Footer />

@@ -1,25 +1,3 @@
-import type { Speaker } from '../types'
+import { zh } from '../i18n/locales/zh'
 
-export const SPEAKERS: Speaker[] = [
-  { id: 1, name: '孙家广', role: '中国工程院院士', image: '/speakers/1.jpg', imagePosition: '50% 35%' },
-  { id: 2, name: '何友', role: '中国工程院院士、中国人工智能学会副理事长', image: '/speakers/2.jpeg', imagePosition: '50% 26%' },
-  { id: 3, name: 'C. Mohan', role: '美国国家工程院院士、香港浸会大学杰出教授', image: '/speakers/3.jpeg', imagePosition: '50% 24%' },
-  { id: 4, name: '王建民', organization: '清华大学软件学院', role: '院长', image: '/speakers/4.jpeg', imagePosition: '50% 27%' },
-  { id: 5, name: '乔嘉林', organization: '天谋科技', role: 'CTO、Apache IoTDB PMC Member', image: '/speakers/5.png', imagePosition: '50% 24%' },
-  { id: 6, name: '黄文俊', organization: '中国石油昆仑数智科技有限责任公司', role: '数据智能事业部总经理', image: '/speakers/6.jpeg', imagePosition: '50% 24%' },
-  { id: 7, name: '张欢', organization: '中国南方航空股份有限公司', role: '项目技术专家', image: '/speakers/7.png', imagePosition: '50% 20%' },
-  { id: 8, name: '孙泽', organization: '中国船舶科学研究中心', role: '副研究员', image: '/speakers/8.jpeg', imagePosition: '50% 25%' },
-  { id: 9, name: '王诗诚', organization: '中能建能源研究院', image: '/speakers/9.jpeg', imagePosition: '50% 25%' },
-  { id: 10, name: '陈宇', organization: '海光信息生态发展部', role: 'AI 技术总监', image: '/speakers/10.jpeg', imagePosition: '50% 24%' },
-  { id: 11, name: '林丽', organization: '东南大学计算机科学与工程学院', role: '助理教授（讲师）', image: '/speakers/11.png', imagePosition: '50% 30%' },
-  { id: 12, name: '陈学峰', organization: '上海玖道信息科技股份有限公司', role: '副总经理', image: '/speakers/12.jpeg', imagePosition: '50% 25%' },
-  { id: 13, name: '陶术江', organization: '中冶赛迪信息技术（重庆）有限公司', role: 'AIoT 平台总监', image: '/speakers/21.jpg', imagePosition: '50% 18%' },
-  { id: 14, name: '齐一凡', organization: '中国地质大学', role: '博士', image: '/speakers/13.png', imagePosition: '50% 22%' },
-  { id: 15, name: '李江', organization: '青海光伏产业创新中心有限责任公司、青海黄河智慧能源科技有限公司', role: '副总', image: '/speakers/14.jpeg', imagePosition: '50% 24%' },
-  { id: 16, name: '吴秋利', organization: '凯特数智科技有限公司', role: '副总经理', image: '/speakers/15.jpeg', imagePosition: '50% 24%' },
-  { id: 17, name: '华冬进', organization: '美克生能源', role: '数字化平台架构师', image: '/speakers/16.jpeg', imagePosition: '50% 28%' },
-  { id: 18, name: '张淏然', organization: '清华大学软件学院', role: '博士', image: '/speakers/17.jpeg', imagePosition: '50% 24%' },
-  { id: 19, name: '马腾飞', organization: '南京天洑', role: '产品总监', image: '/speakers/18.jpeg', imagePosition: '50% 24%' },
-  { id: 20, name: '崔双双', organization: '哈尔滨工业大学', role: '副研究员', image: '/speakers/19.jpeg', imagePosition: '50% 25%' },
-  { id: 21, name: '黄居鑫', organization: '青岛理工大学工程训练中心', role: '实验师', image: '/speakers/20.jpg' },
-]
+export const SPEAKERS = zh.speakers.items

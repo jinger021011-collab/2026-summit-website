@@ -1,4 +1,4 @@
-import { AGENDA } from '../data/agenda'
+import { usePageContent } from '../i18n'
 import type { AgendaTalk } from '../types'
 import { AccessibleTabs } from './AccessibleTabs'
 
@@ -38,9 +38,10 @@ function Talk({ talk }: { talk?: AgendaTalk }) {
 }
 
 function MainTimeline() {
+  const { agenda } = usePageContent()
   return (
     <div className="timeline">
-      {AGENDA.main.map((row) => (
+      {agenda.main.map((row) => (
         <article className={`timeline-card${row.kind === 'ceremony' ? ' ceremony-card' : ''}`} key={row.time}>
           <time>{row.time}</time>
           <Talk talk={row} />
@@ -51,12 +52,13 @@ function MainTimeline() {
 }
 
 function BreakoutTimeline({ field }: { field: 'technical' | 'caseOne' | 'caseTwo' }) {
+  const { agenda } = usePageContent()
   return (
     <div className="timeline">
-      {AGENDA.breakouts.filter((row) => row.break || row[field]).map((row) => (
+      {agenda.breakouts.filter((row) => row.break || row[field]).map((row) => (
         <article className={`timeline-card${row.break ? ' break-card' : ''}`} key={row.time}>
           <time>{row.time}</time>
-          {row.break ? <strong>茶歇</strong> : <Talk talk={row[field]} />}
+          {row.break ? <strong>{agenda.breakLabel}</strong> : <Talk talk={row[field]} />}
         </article>
       ))}
     </div>
@@ -64,12 +66,13 @@ function BreakoutTimeline({ field }: { field: 'technical' | 'caseOne' | 'caseTwo
 }
 
 export function Agenda() {
+  const { agenda } = usePageContent()
   const tabs = [
-    { id: 'agenda-main', label: '主论坛', content: <MainTimeline /> },
-    { id: 'agenda-technical', label: '技术分论坛', content: <BreakoutTimeline field="technical" /> },
-    { id: 'agenda-case-one', label: '案例分论坛（1）', content: <BreakoutTimeline field="caseOne" /> },
-    { id: 'agenda-case-two', label: '案例分论坛（2）', content: <BreakoutTimeline field="caseTwo" /> },
+    { id: 'agenda-main', label: agenda.tabs.main, content: <MainTimeline /> },
+    { id: 'agenda-technical', label: agenda.tabs.technical, content: <BreakoutTimeline field="technical" /> },
+    { id: 'agenda-case-one', label: agenda.tabs.caseOne, content: <BreakoutTimeline field="caseOne" /> },
+    { id: 'agenda-case-two', label: agenda.tabs.caseTwo, content: <BreakoutTimeline field="caseTwo" /> },
   ]
 
-  return <AccessibleTabs className="agenda-tabs" label="大会议程" tabs={tabs} />
+  return <AccessibleTabs className="agenda-tabs" label={agenda.label} tabs={tabs} />
 }

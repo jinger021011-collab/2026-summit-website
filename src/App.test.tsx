@@ -1,10 +1,60 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import App from './App'
 import { shouldShowMobileRegistration } from './lib/visibility'
 
 describe('大会官网', () => {
+  afterEach(() => {
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('在 /en 呈现英文内容、英文 SEO 和语言切换入口', () => {
+    window.history.replaceState(null, '', '/en#agenda')
+    render(<App />)
+
+    expect(document.documentElement).toHaveAttribute('lang', 'en')
+    expect(document.title).toBe('2026 Time Series Tech Innovation Summit | DB × AI')
+    expect(screen.getByRole('heading', { level: 1, name: '2026 Time Series Tech Innovation Summit' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Agenda' })).toBeInTheDocument()
+    expect(screen.getByRole('tabpanel', { name: 'Main Forum' })).toHaveTextContent('The Value of Industrial Time-Series Data')
+    expect(screen.getByRole('link', { name: '中文' })).toHaveAttribute('href', '/#agenda')
+    expect(document.head.querySelector('link[hreflang="zh-CN"]')).toHaveAttribute('href', '/')
+    expect(document.head.querySelector('link[hreflang="en"]')).toHaveAttribute('href', '/en')
+
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('语言切换保持当前锚点并切换页面文案', async () => {
+    const user = userEvent.setup()
+    window.history.replaceState(null, '', '/en#agenda')
+    render(<App />)
+
+    await user.click(screen.getByRole('link', { name: '中文' }))
+
+    expect(window.location.pathname).toBe('/')
+    expect(window.location.hash).toBe('#agenda')
+    expect(screen.getByRole('heading', { name: '大会议程' })).toBeInTheDocument()
+    expect(screen.getByRole('tabpanel', { name: '主论坛' })).toBeInTheDocument()
+  })
+
+  it('英文页脚与 Timecho Global 的导航、德国地址和社交入口一致', () => {
+    window.history.replaceState(null, '', '/en')
+    render(<App />)
+    const footer = screen.getByRole('contentinfo')
+
+    ;['Products', 'News', 'Blogs', 'Company'].forEach((label) => expect(within(footer).getByText(label, { selector: 'span' })).toBeInTheDocument())
+    ;['Support for Apache IoTDB', 'TimechoDB', 'Timecho Workbench', 'Awards', 'Events', 'Case Studies', 'Event Reviews', 'Guides', 'About', 'Careers'].forEach((label) => expect(within(footer).getByRole('link', { name: label })).toBeInTheDocument())
+    expect(footer).toHaveTextContent('Emma-Joos-Straße 6, 70439 Stuttgart, Germany')
+    expect(footer).not.toHaveTextContent('010-62780978')
+    expect(footer).not.toHaveTextContent('京ICP备2023002339号-1')
+    expect(within(footer).getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', 'https://www.timecho-global.com/agreement')
+    expect(within(footer).getByRole('link', { name: 'Halo' })).toHaveAttribute('href', 'https://halo.run')
+    ;['Apache IoTDB Slack', 'Timecho Twitter/X', 'Timecho LinkedIn', 'Apache IoTDB GitHub'].forEach((label) => expect(within(footer).getByRole('link', { name: label })).toBeInTheDocument())
+
+    window.history.replaceState(null, '', '/')
+  })
+
   it('以 HTML 呈现核心活动信息和完整页面结构', () => {
     render(<App />)
     expect(screen.getByRole('heading', { level: 1, name: '2026 时序数据技术创新大会' })).toBeInTheDocument()
@@ -50,7 +100,7 @@ describe('大会官网', () => {
     const semanticTitle = screen.getByRole('heading', { level: 1, name: '2026 时序数据技术创新大会' })
 
     expect(visual).toBeInTheDocument()
-    expect(heroImage).toHaveAttribute('src', '/hero/hero-optimized.jpg')
+    expect(heroImage).toHaveAttribute('src', '/cdn-ready/hero/hero-zh.jpg')
     expect(heroImage).toHaveAttribute('fetchpriority', 'high')
     expect(semanticTitle).toHaveClass('sr-only')
     expect(hero.querySelector('.hero-title-block')).not.toBeInTheDocument()
@@ -88,20 +138,20 @@ describe('大会官网', () => {
     const card = within(grid).getByRole('article', { name: '陈学峰' })
     expect(card).toHaveTextContent('上海玖道信息科技股份有限公司')
     expect(card).toHaveTextContent('副总经理')
-    expect(within(card).getByRole('img')).toHaveAttribute('src', '/speakers/12.jpeg')
+    expect(within(card).getByRole('img')).toHaveAttribute('src', '/cdn-ready/speakers/speaker-12-chen-xuefeng.png')
 
     const chenIndex = cards.indexOf(card)
     const taoCard = cards[chenIndex + 1]
     expect(taoCard).toHaveAccessibleName('陶术江')
     expect(taoCard).toHaveTextContent('中冶赛迪信息技术（重庆）有限公司')
     expect(taoCard).toHaveTextContent('AIoT 平台总监')
-    expect(within(taoCard).getByRole('img')).toHaveAttribute('src', '/speakers/21.jpg')
+    expect(within(taoCard).getByRole('img')).toHaveAttribute('src', '/cdn-ready/speakers/speaker-13-tao-shujiang.png')
 
     expect(cards.at(-2)).toHaveAccessibleName('崔双双')
     expect(cards.at(-1)).toHaveAccessibleName('黄居鑫')
     expect(cards.at(-1)).toHaveTextContent('青岛理工大学工程训练中心')
     expect(cards.at(-1)).toHaveTextContent('实验师')
-    expect(within(cards.at(-1) as HTMLElement).getByRole('img')).toHaveAttribute('src', '/speakers/20.jpg')
+    expect(within(cards.at(-1) as HTMLElement).getByRole('img')).toHaveAttribute('src', '/cdn-ready/speakers/speaker-21-huang-juxin.png')
   })
 
   it('嘉宾单位和职务分行并完整展示', () => {
@@ -290,6 +340,20 @@ describe('大会官网', () => {
     expect(image).toHaveClass('venue-map-full')
   })
 
+  it('英文版场地平面图使用英文专用资源', async () => {
+    const user = userEvent.setup()
+    window.history.replaceState(null, '', '/en')
+    render(<App />)
+    await user.click(screen.getByRole('tab', { name: 'Venue Map' }))
+
+    const thumbnail = screen.getByRole('img', { name: 'Venue map for the 2026 Time Series Tech Innovation Summit' })
+    expect(thumbnail).toHaveAttribute('src', '/cdn-ready/venue/venue-map-en.jpg')
+
+    await user.click(screen.getByRole('button', { name: 'View the Full-size Summit Venue Map' }))
+    const dialog = screen.getByRole('dialog', { name: 'Full-size Venue Map' })
+    expect(within(dialog).getByRole('img', { name: 'Venue map for the 2026 Time Series Tech Innovation Summit' })).toHaveAttribute('src', '/cdn-ready/venue/venue-map-en.jpg')
+  })
+
   it('参会须知将线上参会放在参会提醒后并展示新增联系人', () => {
     render(<App />)
     const panel = document.querySelector<HTMLElement>('#guide-attendance-panel') as HTMLElement
@@ -386,7 +450,7 @@ describe('大会官网', () => {
 
     expect(social.querySelectorAll('.footer-social-control > svg')).toHaveLength(2)
     expect(github.querySelector('svg')).not.toBeInTheDocument()
-    expect(github.querySelector('img')).toHaveAttribute('src', '/social/github.png')
+    expect(github.querySelector('img')).toHaveAttribute('src', '/cdn-ready/social/github.png')
     expect(github.querySelector('img')).toHaveClass('footer-github-icon')
     expect(twitter).not.toHaveTextContent('X')
     expect(github).not.toHaveTextContent('GH')
@@ -396,7 +460,15 @@ describe('大会官网', () => {
     await user.click(wechat)
     expect(wechat).toHaveAttribute('aria-expanded', 'true')
     expect(popover).not.toHaveAttribute('hidden')
-    expect(within(popover).getByRole('img', { name: 'Timecho 公众号二维码' })).toHaveAttribute('src', '/timecho-wechat-qr.png')
+    expect(within(popover).getByRole('img', { name: 'Timecho 公众号二维码' })).toHaveAttribute('src', '/cdn-ready/social/wechat-official-account-qr.png')
+  })
+
+  it('英文页脚使用提供的 Slack 和 LinkedIn 图标素材', () => {
+    window.history.replaceState(null, '', '/en')
+    render(<App />)
+    const social = within(screen.getByRole('contentinfo')).getByLabelText('Timecho Social Media')
+    expect(within(social).getByRole('link', { name: 'Apache IoTDB Slack' }).querySelector('img')).toHaveAttribute('src', '/cdn-ready/social/slack.png')
+    expect(within(social).getByRole('link', { name: 'Timecho LinkedIn' }).querySelector('img')).toHaveAttribute('src', '/cdn-ready/social/linkedin.png')
   })
 
   it('页脚所有外链安全打开且没有空链接', () => {

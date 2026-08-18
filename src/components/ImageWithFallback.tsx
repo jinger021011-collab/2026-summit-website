@@ -1,4 +1,5 @@
 import { useState, type ImgHTMLAttributes, type ReactNode } from 'react'
+import { usePageContent } from '../i18n'
 
 interface ImageWithFallbackProps extends ImgHTMLAttributes<HTMLImageElement> {
   fallback?: ReactNode
@@ -6,9 +7,10 @@ interface ImageWithFallbackProps extends ImgHTMLAttributes<HTMLImageElement> {
 
 export function ImageWithFallback({ fallback, onError, ...props }: ImageWithFallbackProps) {
   const [failed, setFailed] = useState(false)
+  const content = usePageContent()
 
   if (failed) {
-    return <>{fallback ?? <span className="image-fallback">图片暂不可用</span>}</>
+    return <>{fallback ?? <span className="image-fallback">{content.common.imageUnavailable}</span>}</>
   }
 
   return (

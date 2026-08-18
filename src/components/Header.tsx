@@ -1,6 +1,11 @@
 import { Menu, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SITE } from '../data/site'
+import { ASSETS } from '../data/assets'
+import { usePageContent } from '../i18n'
+import { getLocalizedUrl } from '../i18n/routing'
+import type { Language } from '../i18n/types'
 import { RegistrationLink } from './RegistrationLink'
 
 interface HeaderProps {
@@ -8,6 +13,8 @@ interface HeaderProps {
 }
 
 export function Header({ activeSection }: HeaderProps) {
+  const content = usePageContent()
+  const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
   const menuButton = useRef<HTMLButtonElement>(null)
   const closeButton = useRef<HTMLButtonElement>(null)
@@ -43,25 +50,40 @@ export function Header({ activeSection }: HeaderProps) {
     }
   }, [open])
 
+  const switchLanguage = (language: Language) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (content.language === language) return
+    event.preventDefault()
+    const target = getLocalizedUrl(language)
+    window.history.pushState(null, '', target)
+    void i18n.changeLanguage(language)
+  }
+
+  const languageSwitcher = <nav className="language-switcher" aria-label={content.header.languageNavigation}>
+    <a href={getLocalizedUrl('zh')} aria-current={content.language === 'zh' ? 'page' : undefined} onClick={switchLanguage('zh')}>中文</a>
+    <span aria-hidden="true">/</span>
+    <a href={getLocalizedUrl('en')} aria-current={content.language === 'en' ? 'page' : undefined} onClick={switchLanguage('en')}>EN</a>
+  </nav>
+
   return <>
     <header className="site-header">
       <div className="header-inner">
-        <a className="brand" href={SITE.links.timecho} target="_blank" rel="noopener noreferrer" aria-label="Timecho 天谋科技官网">
-          <img src="/logos/承办单位/20260813-161454.png" alt="Timecho 天谋科技" />
+        <a className="brand" href={SITE.links.timecho} target="_blank" rel="noopener noreferrer" aria-label={content.header.homeLabel}>
+          <img src={ASSETS.headerLogo} alt={content.header.logoAlt} />
         </a>
-        <nav className="desktop-nav" aria-label="主导航">
-          {SITE.navigation.map((item) => (
+        <nav className="desktop-nav" aria-label={content.header.mainNavigation}>
+          {content.site.navigation.map((item) => (
             <a key={item.href} href={item.href} aria-current={activeSection === item.href.slice(1) ? 'location' : undefined}>
               {item.label}
             </a>
           ))}
         </nav>
-        <RegistrationLink position="navigation" className="button button-small header-cta">立即报名</RegistrationLink>
+        {languageSwitcher}
+        <RegistrationLink position="navigation" className="button button-small header-cta">{content.common.register}</RegistrationLink>
         <button
           ref={menuButton}
           className="menu-trigger"
           type="button"
-          aria-label="打开导航菜单"
+          aria-label={content.header.openMenu}
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen(true)}
@@ -72,17 +94,18 @@ export function Header({ activeSection }: HeaderProps) {
     </header>
     {open && (
       <div className="mobile-menu-layer">
-        <button className="menu-scrim" type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)} />
-        <nav ref={mobileMenu} id="mobile-menu" className="mobile-menu" aria-label="移动端导航">
+        <button className="menu-scrim" type="button" aria-label={content.header.closeMenu} onClick={() => setOpen(false)} />
+        <nav ref={mobileMenu} id="mobile-menu" className="mobile-menu" aria-label={content.header.mobileNavigation}>
           <div className="mobile-menu-head">
-            <span>导航</span>
-            <button ref={closeButton} type="button" aria-label="关闭导航菜单" onClick={() => setOpen(false)}>
+            <span>{content.header.navigation}</span>
+            <button ref={closeButton} type="button" aria-label={content.header.closeMenu} onClick={() => setOpen(false)}>
               <X aria-hidden="true" />
             </button>
           </div>
-          {SITE.navigation.map((item) => (
+          {content.site.navigation.map((item) => (
             <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>
           ))}
+          {languageSwitcher}
         </nav>
       </div>
     )}

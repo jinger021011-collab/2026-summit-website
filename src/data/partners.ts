@@ -1,20 +1,21 @@
 import type { PartnerGroup, PartnerItem } from '../types'
+import { logoAsset } from './assets'
 
-const numericItems = (folder: string, count: number, groupLabel: string): PartnerItem[] =>
+const numericItems = (group: 'co-organizer' | 'partner' | 'media', count: number): PartnerItem[] =>
   Array.from({ length: count }, (_, index) => ({
     order: index + 1,
-    image: `/logos/normalized/${folder}/${index + 1}.png`,
-    alt: `${groupLabel} Logo ${index + 1}`,
+    image: logoAsset(group, index + 1),
+    alt: '',
   }))
 
 export const PARTNER_GROUPS: PartnerGroup[] = [
-  { id: 'host', title: '主办单位', items: numericItems('主办单位', 1, '主办单位') },
+  { id: 'host', title: '', items: [{ order: 1, image: logoAsset('host', 1), alt: '' }] },
   {
     id: 'organizer',
-    title: '承办单位',
-    items: [{ order: 1, image: '/logos/normalized/承办单位/20260813-161454.png', alt: '承办单位 Logo' }],
+    title: '',
+    items: [{ order: 1, image: logoAsset('organizer', 1), alt: '' }],
   },
-  { id: 'co-organizers', title: '协办单位', items: numericItems('协办单位', 3, '协办单位') },
-  { id: 'partners', title: '赞助商／合作伙伴', items: numericItems('合作伙伴', 12, '合作伙伴') },
-  { id: 'media', title: '合作媒体', items: numericItems('合作媒体', 6, '合作媒体') },
+  { id: 'co-organizers', title: '', items: numericItems('co-organizer', 3) },
+  { id: 'partners', title: '', items: numericItems('partner', 12) },
+  { id: 'media', title: '', items: numericItems('media', 6) },
 ]

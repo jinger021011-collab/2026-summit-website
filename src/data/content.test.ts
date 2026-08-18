@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { SITE } from './site'
 import { AGENDA } from './agenda'
 import { SPEAKERS } from './speakers'
 import { PARTNER_GROUPS } from './partners'
+import { en } from '../i18n/locales/en'
+import { zh } from '../i18n/locales/zh'
 
 describe('大会内容数据', () => {
   it('所有报名入口共享官方地址并覆盖四个统计位置', () => {
@@ -45,20 +49,43 @@ describe('大会内容数据', () => {
 
   it('展示全部 21 位已确认嘉宾并将陶术江排在陈学峰之后', () => {
     expect(SPEAKERS).toHaveLength(21)
+    expect(SPEAKERS.every((speaker) => speaker.image.startsWith('/cdn-ready/speakers/'))).toBe(true)
     expect(SPEAKERS[11]).toMatchObject({
       name: '陈学峰',
-      image: '/speakers/12.jpeg',
+      image: '/cdn-ready/speakers/speaker-12-chen-xuefeng.png',
     })
     expect(SPEAKERS[12]).toMatchObject({
       name: '陶术江',
       organization: '中冶赛迪信息技术（重庆）有限公司',
       role: 'AIoT 平台总监',
-      image: '/speakers/21.jpg',
+      image: '/cdn-ready/speakers/speaker-13-tao-shujiang.png',
     })
     expect(SPEAKERS[20]).toMatchObject({
       name: '黄居鑫',
-      image: '/speakers/20.jpg',
+      image: '/cdn-ready/speakers/speaker-21-huang-juxin.png',
     })
+  })
+
+  it('中英文页面使用统一的 CDN-ready 资源命名', () => {
+    expect(zh.site.heroImage).toBe('/cdn-ready/hero/hero-zh.jpg')
+    expect(en.site.heroImage).toBe('/cdn-ready/hero/hero-en.jpeg')
+    expect(SPEAKERS.every((speaker) => /^\/cdn-ready\/speakers\/speaker-\d+-[a-z0-9-]+\.png$/.test(speaker.image))).toBe(true)
+    expect(PARTNER_GROUPS.flatMap((group) => group.items).every((logo) => /^\/cdn-ready\/logos\/logo-[a-z-]+-\d+\.png$/.test(logo.image))).toBe(true)
+  })
+
+  it('嘉宾网页素材保持足够像素密度，避免低分辨率放大模糊', () => {
+    const readPngSize = (imagePath: string) => {
+      const bytes = readFileSync(resolve(process.cwd(), 'assets', imagePath.replace(/^\//, '')))
+      return {
+        width: bytes.readUInt32BE(16),
+        height: bytes.readUInt32BE(20),
+      }
+    }
+
+    expect(SPEAKERS.every((speaker) => {
+      const { width, height } = readPngSize(speaker.image)
+      return width >= 360 && height >= 360
+    })).toBe(true)
   })
 
   it('每组 Logo 按数字顺序排列', () => {
@@ -72,6 +99,6 @@ describe('大会内容数据', () => {
     const logos = PARTNER_GROUPS.flatMap((group) => group.items)
 
     expect(logos).toHaveLength(23)
-    expect(logos.every((logo) => logo.image.startsWith('/logos/normalized/'))).toBe(true)
+    expect(logos.every((logo) => logo.image.startsWith('/cdn-ready/logos/'))).toBe(true)
   })
 })

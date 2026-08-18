@@ -9,7 +9,7 @@ describe('全局导航', () => {
     const logo = screen.getByRole('img', { name: 'Timecho 天谋科技' })
     expect(logo).toHaveAttribute(
       'src',
-      '/logos/承办单位/20260813-161454.png',
+      '/cdn-ready/logos/logo-organizer-header.png',
     )
     const brand = logo.closest('a')
     expect(brand).toHaveAttribute('href', 'https://www.timecho.com/')

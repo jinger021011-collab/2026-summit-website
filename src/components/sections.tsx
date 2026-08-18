@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { BrainCircuit, Building2, CalendarDays, DatabaseZap, MapPin, UsersRound } from 'lucide-react'
-import { HIGHLIGHTS, SITE } from '../data/site'
+import { SITE } from '../data/site'
+import { ASSETS } from '../data/assets'
+import { usePageContent } from '../i18n'
 import { RegistrationLink } from './RegistrationLink'
 
 const highlightIcons = [DatabaseZap, BrainCircuit, Building2, UsersRound]
@@ -18,34 +20,38 @@ function WechatIcon() {
 }
 
 export function HeroSection() {
+  const content = usePageContent()
   return <section id="top" className="hero" aria-labelledby="hero-title">
     <div className="hero-stage">
       <div className="hero-visual" aria-hidden="true">
-        <img className="hero-art" src="/hero/hero-optimized.jpg" alt="" fetchPriority="high" />
+        <img className="hero-art" src={content.site.heroImage} alt="" fetchPriority="high" />
       </div>
-      <h1 id="hero-title" className="sr-only">{SITE.name}</h1>
+      <h1 id="hero-title" className="sr-only">{content.site.name}</h1>
       <div className="hero-info-bar">
-        <div className="hero-fact"><CalendarDays aria-hidden="true" /><span><small>大会时间</small><strong><time dateTime="2026-08-22">{SITE.dateShort}</time></strong></span></div>
-        <div className="hero-fact"><MapPin aria-hidden="true" /><span><small>大会地点</small><strong>{SITE.venue}</strong></span></div>
-        <RegistrationLink position="hero_bottom" className="button button-primary">立即报名</RegistrationLink>
+        <div className="hero-fact"><CalendarDays aria-hidden="true" /><span><small>{content.site.dateLabel}</small><strong><time dateTime="2026-08-22">{content.site.dateShort}</time></strong></span></div>
+        <div className="hero-fact"><MapPin aria-hidden="true" /><span><small>{content.site.venueLabel}</small><strong>{content.site.venue}</strong></span></div>
+        <RegistrationLink position="hero_bottom" className="button button-primary">{content.common.register}</RegistrationLink>
       </div>
     </div>
   </section>
 }
 
 export function AboutSection() {
+  const content = usePageContent()
   return <section id="about" className="section section-light" aria-labelledby="about-title"><div className="container">
-    <header className="section-heading"><p className="section-kicker">ABOUT THE SUMMIT</p><h2 id="about-title">关于大会</h2></header>
-    <div className="about-copy"><p>2026 时序数据技术创新大会以“DB × AI”为主题，汇聚产学研各界专家、企业技术负责人及行业实践者，围绕时序数据库、时序大模型与工业数据智能展开深入交流。</p><p>大会将发布 TimechoDB 与 TimechoAI 全新融合产品矩阵，分享时序数据库与人工智能在航空航天、能源电力、石油化工、工业制造等场景中的实践成果，共同探讨数据库与 AI 深度融合的技术趋势与产业机会。</p></div>
-    <div className="highlight-grid">{HIGHLIGHTS.map((item, index) => { const Icon = highlightIcons[index]; return <article className="highlight-card" key={item.title}><span className="highlight-icon"><Icon aria-hidden="true" /></span><h3>{item.title}</h3><p>{item.description}</p></article> })}</div>
+    <header className="section-heading"><p className="section-kicker">ABOUT THE SUMMIT</p><h2 id="about-title">{content.sections.about}</h2></header>
+    <div className="about-copy">{content.about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+    <div className="highlight-grid">{content.about.highlights.map((item, index) => { const Icon = highlightIcons[index]; return <article className="highlight-card" key={item.title}><span className="highlight-icon"><Icon aria-hidden="true" /></span><h3>{item.title}</h3><p>{item.description}</p></article> })}</div>
   </div></section>
 }
 
 export function RegisterSection() {
-  return <section id="register" className="register-section" aria-labelledby="register-title"><div className="register-glow" /><div className="container register-content"><p className="section-kicker">JOIN US IN BEIJING</p><h2 id="register-title">DB × AI<br />探索时序数据与人工智能融合的新未来</h2><p>2026 年 8 月 22 日，北京见！</p><RegistrationLink position="final_cta" className="button button-bright">立即报名</RegistrationLink><small>席位有限，请提前报名</small></div></section>
+  const content = usePageContent()
+  return <section id="register" className="register-section" aria-labelledby="register-title"><div className="register-glow" /><div className="container register-content"><p className="section-kicker">JOIN US IN BEIJING</p><h2 id="register-title">{content.register.heading[0]}<br />{content.register.heading[1]}</h2><p>{content.register.supporting}</p><RegistrationLink position="final_cta" className="button button-bright">{content.common.register}</RegistrationLink><small>{content.register.limited}</small></div></section>
 }
 
 export function Footer() {
+  const content = usePageContent()
   const [desktopNavigation, setDesktopNavigation] = useState(() => typeof window === 'undefined' || window.matchMedia('(min-width: 601px)').matches)
   const [wechatPinned, setWechatPinned] = useState(false)
   const [wechatHovered, setWechatHovered] = useState(false)
@@ -66,17 +72,18 @@ export function Footer() {
     contact?.focus({ preventScroll: true })
   }
 
-  return <div id="footer-area" className="footer-area">
+  return <div id="footer-area" className={`footer-area footer-${content.language}`}>
     <footer id="site-footer" className="footer">
       <div className="official-footer-container">
         <div className="official-footer-main">
-          <nav className="official-footer-nav" aria-label="Timecho 官网导航">
-            {SITE.footer.navigation.map((group) => <details className="footer-nav-group" key={`${group.title}-${desktopNavigation}`} open={desktopNavigation}>
+          <nav className="official-footer-nav" aria-label={content.footer.navigationLabel}>
+            {content.footer.navigation.map((group, groupIndex) => <details className="footer-nav-group" key={`${group.title}-${desktopNavigation}`} open={desktopNavigation}>
               <summary><span>{group.title}</span></summary>
-              <ul>{group.links.map((link) => <li key={`${group.title}-${link.label}`}><a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a></li>)}{group.title === '关于我们' && <li><button type="button" onClick={focusContact}>联系我们</button></li>}</ul>
+              <ul>{group.links.map((label, linkIndex) => <li key={`${group.title}-${label}`}><a href={SITE.footer.navigationUrls[content.language][groupIndex][linkIndex]} target="_blank" rel="noopener noreferrer">{label}</a></li>)}{groupIndex === content.footer.navigation.length - 1 && <li><button type="button" onClick={focusContact}>{content.footer.contactUs}</button></li>}</ul>
             </details>)}
           </nav>
-          <div className="footer-social-links" aria-label="Timecho 社交媒体">
+          <div className="footer-social-links" aria-label={content.footer.socialLabel}>
+            {content.language === 'zh' ? <>
             <div
               className="footer-wechat"
               onMouseEnter={() => setWechatHovered(true)}
@@ -89,7 +96,7 @@ export function Footer() {
               <button
                 className="footer-social-control"
                 type="button"
-                aria-label="显示 Timecho 公众号二维码"
+                aria-label={content.footer.wechatButton}
                 aria-expanded={wechatVisible}
                 aria-haspopup="dialog"
                 aria-controls="footer-wechat-qr"
@@ -98,29 +105,35 @@ export function Footer() {
                   setWechatPinned((visible) => !visible)
                 }}
               ><WechatIcon /></button>
-              <div id="footer-wechat-qr" className="wechat-qr-popover" data-testid="wechat-qr-popover" role="dialog" aria-label="Timecho 公众号二维码" hidden={!wechatVisible}>
-                <img src="/timecho-wechat-qr.png" alt="Timecho 公众号二维码" />
+              <div id="footer-wechat-qr" className="wechat-qr-popover" data-testid="wechat-qr-popover" role="dialog" aria-label={content.footer.wechatDialog} hidden={!wechatVisible}>
+                <img src={ASSETS.social.wechatQr} alt={content.footer.wechatImageAlt} />
               </div>
             </div>
-            <a className="footer-social-control" href={SITE.footer.socialLinks[0].href} target="_blank" rel="noopener noreferrer" aria-label="Timecho Twitter/X"><XIcon /></a>
-            <a className="footer-social-control" href={SITE.footer.socialLinks[1].href} target="_blank" rel="noopener noreferrer" aria-label="Apache IoTDB GitHub"><img className="footer-github-icon" src="/social/github.png" alt="" width="21" height="21" /></a>
+            <a className="footer-social-control" href={SITE.footer.socialLinks[1].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.twitterLabel}><XIcon /></a>
+            <a className="footer-social-control" href={SITE.footer.socialLinks[3].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.githubLabel}><img className="footer-github-icon" src={ASSETS.social.github} alt="" width="21" height="21" /></a>
+            </> : <>
+              <a className="footer-social-control" href={SITE.footer.socialLinks[0].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.slackLabel}><img className="footer-brand-icon" src={ASSETS.social.slack} alt="" width="21" height="21" /></a>
+              <a className="footer-social-control" href={SITE.footer.socialLinks[1].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.twitterLabel}><XIcon /></a>
+              <a className="footer-social-control" href={SITE.footer.socialLinks[2].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.linkedinLabel}><img className="footer-brand-icon" src={ASSETS.social.linkedin} alt="" width="21" height="21" /></a>
+              <a className="footer-social-control" href={SITE.footer.socialLinks[3].href} target="_blank" rel="noopener noreferrer" aria-label={content.footer.githubLabel}><img className="footer-github-icon" src={ASSETS.social.github} alt="" width="21" height="21" /></a>
+            </>}
           </div>
         </div>
 
         <div className="footer-contact-row">
           <div className="footer-contact" data-testid="official-contact" tabIndex={-1}>
-            <p><span>地址：</span>北京市海淀区奥北科技园领智中心C座601</p>
-            <p><span>电话：</span><a href="tel:010-62780978">010-62780978</a></p>
+            <p><span>{content.footer.addressLabel}</span>{content.footer.address}</p>
+            {content.language === 'zh' && <p><span>{content.footer.phoneLabel}</span><a href="tel:010-62780978">010-62780978</a></p>}
           </div>
           <div className="footer-legal-copy">
-            <p>Copyright © 2026 Timecho Limited All rights reserved.</p>
-            <p>Apache IoTDB及Apache IoTDB项目标志是Apache软件基金会（The Apache Software Foundation）的注册商标。</p>
+            <p>{content.footer.copyright}{content.footer.poweredByHalo && <> Powered by <a href={SITE.links.halo} target="_blank" rel="noopener noreferrer">Halo</a>.</>}</p>
+            <p>{content.footer.trademark}</p>
           </div>
         </div>
 
         <div className="footer-compliance-row">
-          <a href={SITE.links.privacy} target="_blank" rel="noopener noreferrer">隐私协议</a>
-          <a href={SITE.footer.recordUrl} target="_blank" rel="noopener noreferrer">京ICP备2023002339号-1</a>
+          <a href={content.language === 'en' ? SITE.links.globalPrivacy : SITE.links.privacy} target="_blank" rel="noopener noreferrer">{content.footer.privacy}</a>
+          {content.footer.record && <a href={SITE.footer.recordUrl} target="_blank" rel="noopener noreferrer">{content.footer.record}</a>}
         </div>
       </div>
     </footer>
