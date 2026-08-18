@@ -45,10 +45,13 @@ describe('大会官网', () => {
     render(<App />)
     const hero = screen.getByRole('region', { name: '2026 时序数据技术创新大会' })
     const visual = hero.querySelector('.hero-visual')
+    const heroImage = visual?.querySelector('img')
     const infoBar = hero.querySelector('.hero-info-bar')
     const semanticTitle = screen.getByRole('heading', { level: 1, name: '2026 时序数据技术创新大会' })
 
     expect(visual).toBeInTheDocument()
+    expect(heroImage).toHaveAttribute('src', '/hero/hero-optimized.jpg')
+    expect(heroImage).toHaveAttribute('fetchpriority', 'high')
     expect(semanticTitle).toHaveClass('sr-only')
     expect(hero.querySelector('.hero-title-block')).not.toBeInTheDocument()
     expect(infoBar).toHaveTextContent('2026年8月22日')

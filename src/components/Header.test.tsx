@@ -6,10 +6,15 @@ import { Header } from './Header'
 describe('全局导航', () => {
   it('直接使用提供的 Timecho Logo 素材', () => {
     render(<Header activeSection="about" />)
-    expect(screen.getByRole('img', { name: 'Timecho 天谋科技' })).toHaveAttribute(
+    const logo = screen.getByRole('img', { name: 'Timecho 天谋科技' })
+    expect(logo).toHaveAttribute(
       'src',
       '/logos/承办单位/20260813-161454.png',
     )
+    const brand = logo.closest('a')
+    expect(brand).toHaveAttribute('href', 'https://www.timecho.com/')
+    expect(brand).toHaveAttribute('target', '_blank')
+    expect(brand).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('移动菜单支持 Escape 关闭和焦点恢复', async () => {

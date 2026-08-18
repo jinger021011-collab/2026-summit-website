@@ -46,7 +46,7 @@ export function Header({ activeSection }: HeaderProps) {
   return <>
     <header className="site-header">
       <div className="header-inner">
-        <a className="brand" href="#top" aria-label="2026 时序数据技术创新大会首页">
+        <a className="brand" href={SITE.links.timecho} target="_blank" rel="noopener noreferrer" aria-label="Timecho 天谋科技官网">
           <img src="/logos/承办单位/20260813-161454.png" alt="Timecho 天谋科技" />
         </a>
         <nav className="desktop-nav" aria-label="主导航">

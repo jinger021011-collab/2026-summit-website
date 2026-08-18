@@ -21,7 +21,7 @@ export function HeroSection() {
   return <section id="top" className="hero" aria-labelledby="hero-title">
     <div className="hero-stage">
       <div className="hero-visual" aria-hidden="true">
-        <img className="hero-art" src="/hero/【平面设计稿-非实物】2026时序数据技术创新大会(2)_02.png" alt="" fetchPriority="high" />
+        <img className="hero-art" src="/hero/hero-optimized.jpg" alt="" fetchPriority="high" />
       </div>
       <h1 id="hero-title" className="sr-only">{SITE.name}</h1>
       <div className="hero-info-bar">
